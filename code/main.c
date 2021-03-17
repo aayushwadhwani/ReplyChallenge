@@ -63,7 +63,6 @@ int main()
             countOfXY++;
         }
     }
-
     while(number>0)
     {
         int maxRange = 0;
