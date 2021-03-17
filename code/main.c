@@ -24,7 +24,7 @@ int main()
     int w, h; //why?
     int noOfbuildings, noOfantenas, noOfMidpoints = 0, reward;
     FILE *fptr;
-    fptr = fopen("C:\\Users\\Dell\\Desktop\\Competitions\\ReplyChallenge\\input\\a.in", "r");
+    fptr = fopen("C:\\Users\\Dell\\Desktop\\Competitions\\ReplyChallenge\\input\\b.in", "r");
     if(fptr == NULL)
     {
       printf("Error!");
@@ -33,8 +33,8 @@ int main()
     fscanf(fptr, "%d %d\n%d %d %d", &w, &h, &noOfbuildings, &noOfantenas, &reward);
 
     int number = noOfantenas;
-    struct antena data[noOfantenas];
-    struct buildings build[noOfbuildings];
+    struct antena *data = (struct antena*)malloc(noOfantenas*sizeof(struct antena));
+    struct buildings *build = (struct buildings*)malloc(noOfbuildings*sizeof(struct buildings));
     fscanf(fptr, "\n\n");
     for (int i = 0; i < noOfbuildings; i++)
     {
@@ -51,7 +51,11 @@ int main()
         noOfMidpoints = noOfMidpoints+i;
     }
     printf("%d", noOfMidpoints);
-    struct midpoints mid[noOfMidpoints];
+    struct midpoints *mid = (struct midpoints*)malloc(noOfMidpoints*sizeof(struct midpoints));
+    if(mid == NULL){
+        printf("Not found");
+        exit(0);
+    }
     int countOfXY = 0;
     //o(n2)
     for(int i=noOfbuildings-1;i>=1 ;i--)
@@ -77,9 +81,7 @@ int main()
                 maxRange = data[i].range;
             }
         }
-        int closeOnes[noOfMidpoints];
-        for(int i=0 ;i<noOfMidpoints ;i++)
-            closeOnes[i] = 0;
+        int *closeOnes = (int*)calloc(noOfMidpoints, sizeof(int));
         for(int i=0 ;i<noOfMidpoints ;i++)
         {
             for(int j = 0; j<noOfbuildings; j++)
@@ -117,7 +119,11 @@ int main()
         }
         data[id].range = -1;
         number --;
+        free(closeOnes);
     }
+    free(data);
+    free(build);
+    free(mid);
     return 0;
 }
 
